@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * Implementation of hook_install().
+ */
+function uc_price_per_role_install() {
+  db_query("CREATE TABLE {uc_price_per_role_prices} (
+    `rpid` mediumint(9) NOT NULL default 0,
+    `vid` mediumint(9) NOT NULL default 0,
+    `nid` mediumint(9) NOT NULL default 0,
+    `rid` mediumint(9) NOT NULL default 0,
+    `price` decimal(10,2) NOT NULL default 0.00,
+    PRIMARY KEY  (`rpid`)
+  );");
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function uc_price_per_role_uninstall() {
+  db_query("DROP TABLE {uc_price_per_role_prices}");
+}

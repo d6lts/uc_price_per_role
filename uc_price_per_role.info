@@ -1,0 +1,5 @@
+; $Id$
+name = Price per role
+description = Allow Ubercart products to have role-specific pricing.
+dependencies = uc_product
+package = Ubercart - extra
