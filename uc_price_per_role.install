@@ -12,6 +12,15 @@ function uc_price_per_role_install() {
     `price` decimal(10,2) NOT NULL default 0.00,
     PRIMARY KEY  (`rpid`)
   );");
+
+  db_query("CREATE TABLE {uc_price_per_role_option_prices} (
+    `opid` mediumint(9) NOT NULL default 0,
+    `nid` mediumint(9) NOT NULL default 0,
+    `oid` mediumint(9) NOT NULL default 0,
+    `rid` mediumint(9) NOT NULL default 0,
+    `price` decimal(10,2) NOT NULL default 0.00,
+    PRIMARY KEY  (`opid`)
+  );");
 }
 
 /**
@@ -19,4 +28,16 @@ function uc_price_per_role_install() {
  */
 function uc_price_per_role_uninstall() {
   db_query("DROP TABLE {uc_price_per_role_prices}");
+}
+
+function uc_price_per_role_update_1() {
+  $ret[] = update_sql("CREATE TABLE {uc_price_per_role_option_prices} (
+    `opid` mediumint(9) NOT NULL default 0,
+    `nid` mediumint(9) NOT NULL default 0,
+    `oid` mediumint(9) NOT NULL default 0,
+    `rid` mediumint(9) NOT NULL default 0,
+    `price` decimal(10,2) NOT NULL default 0.00,
+    PRIMARY KEY  (`opid`)
+  )");
+  return $ret;
 }
