@@ -1,43 +1,62 @@
 <?php
+// $Id$
 
 /**
  * Implementation of hook_install().
  */
 function uc_price_per_role_install() {
-  db_query("CREATE TABLE {uc_price_per_role_prices} (
-    `rpid` mediumint(9) NOT NULL default 0,
-    `vid` mediumint(9) NOT NULL default 0,
-    `nid` mediumint(9) NOT NULL default 0,
-    `rid` mediumint(9) NOT NULL default 0,
-    `price` decimal(10,2) NOT NULL default 0.00,
-    PRIMARY KEY  (`rpid`)
-  );");
-
-  db_query("CREATE TABLE {uc_price_per_role_option_prices} (
-    `opid` mediumint(9) NOT NULL default 0,
-    `nid` mediumint(9) NOT NULL default 0,
-    `oid` mediumint(9) NOT NULL default 0,
-    `rid` mediumint(9) NOT NULL default 0,
-    `price` decimal(10,2) NOT NULL default 0.00,
-    PRIMARY KEY  (`opid`)
-  );");
+  drupal_install_schema('uc_price_per_role');
 }
 
 /**
  * Implementation of hook_uninstall().
  */
 function uc_price_per_role_uninstall() {
-  db_query("DROP TABLE {uc_price_per_role_prices}");
+  drupal_uninstall_schema('uc_price_per_role');
 }
 
-function uc_price_per_role_update_1() {
-  $ret[] = update_sql("CREATE TABLE {uc_price_per_role_option_prices} (
-    `opid` mediumint(9) NOT NULL default 0,
-    `nid` mediumint(9) NOT NULL default 0,
-    `oid` mediumint(9) NOT NULL default 0,
-    `rid` mediumint(9) NOT NULL default 0,
-    `price` decimal(10,2) NOT NULL default 0.00,
-    PRIMARY KEY  (`opid`)
-  )");
-  return $ret;
+/**
+ * Implementation of hook_schema().
+ */
+function uc_price_per_role_schema() {
+  $schema = array();
+
+  $schema['uc_price_per_role_prices'] = array(
+    'description' => t('Ubercart price per role'),
+    'fields' => array(
+      'rpid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'vid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'nid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'rid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'price' => array(
+        'type' => 'numeric',
+        'precision' => 10,
+        'scale' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('rpid'),
+  );
+
+  return $schema;
 }
