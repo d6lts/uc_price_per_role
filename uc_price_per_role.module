@@ -555,3 +555,10 @@ function uc_price_per_role_switch_form_submit($form_id, &$form_state) {
     $_SESSION['price_role'] = $form_state['values']['role'];
   }
 }
+
+/**
+ * Implementation of hook_migrate_api().
+ */
+function uc_price_per_role_migrate_api() {
+  return array('api' => 1);
+}
