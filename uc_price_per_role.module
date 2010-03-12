@@ -147,7 +147,7 @@ function uc_price_per_role_settings_form_submit($form, &$form_state) {
 /**
  * Implementation of hook_form_alter().
  */
-function uc_price_per_role_form_alter(&$form, &$form_state, $form_id) {
+function uc_price_per_role_form_alter(&$form, $form_state, $form_id) {
   if ($form['#id'] == 'node-form' && isset($form['base']['prices'])) {
     $enabled = variable_get('uc_price_per_role_enabled', array());
 
