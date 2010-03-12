@@ -13,6 +13,8 @@ function uc_price_per_role_install() {
  */
 function uc_price_per_role_uninstall() {
   drupal_uninstall_schema('uc_price_per_role');
+  variable_del('uc_price_per_role_enabled');
+  variable_del('uc_price_per_role_weights');
 }
 
 /**

@@ -150,6 +150,14 @@ function uc_price_per_role_settings_form_submit($form, &$form_state) {
 function uc_price_per_role_form_alter(&$form, $form_state, $form_id) {
   if ($form['#id'] == 'node-form' && isset($form['base']['prices'])) {
     $enabled = variable_get('uc_price_per_role_enabled', array());
+    $enabled_roles = array_filter($enabled);
+
+    // If there is an enabled role, change the label on the core Ubercart sell
+    // price to indicate it is now the default price.
+    if (!empty($enabled_roles)) {
+      $form['base']['prices']['sell_price']['#title'] = t('Default sell price');
+      $form['base']['prices']['sell_price']['#description'] = t('Default customer purchase price.');
+    }
 
     $form['base']['role_prices'] = array(
       '#weight' => 6,
@@ -171,9 +179,17 @@ function uc_price_per_role_form_alter(&$form, $form_state, $form_id) {
         );
       }
     }
+  }
 
 
-  } else if (strpos($form_id, 'add_to_cart_form')) {
+  else if ($form_id === 'uc_object_options_form') {
+    $form['uc_price_per_role_note'] = array(
+      '#value' => '<p>'. t('Note: "Price" column is the default option price. To set option prices per role use the <a href="@link">options prices form</a>.', array('@link' => url('node/'. $form['id']['#value'] .'/edit/option_prices'))) .'</p>',
+    );
+  }
+
+
+  else if (strpos($form_id, 'add_to_cart_form')) {
     // Modify product form attribute option prices.
     $format = variable_get('uc_attribute_option_price_format', 'adjustment');
     if (module_exists('uc_attribute') && $format != 'none') {
@@ -191,18 +207,38 @@ function uc_price_per_role_form_alter(&$form, $form_state, $form_id) {
         if (isset($form['attributes'][$aid]['#options'])) {
           $attribute = uc_attribute_load($aid, $nid, 'product');
 
+          $context = array(
+            'revision' => 'altered',
+            'type' => 'product',
+            'subject' => array(
+              'node' => $product,
+            ),
+            'field' => 'price',
+          );
+          $product_price = uc_price($product->sell_price, $context);
+
           foreach (array_keys($form['attributes'][$aid]['#options']) as $oid) {
             $price = uc_price_per_role_find_price($role_prices[$oid]);
 
             if ($price !== FALSE) {
+              $context = array(
+                'revision' => 'formatted',
+                'type' => 'attribute_option',
+                'subject' => array(
+                  'attribute' => $attribute,
+                  'option' => $attribute->options[$oid],
+                ),
+                'field' => 'price',
+              );
+
               switch ($format) {
                 case 'total':
-                  $display_price = in_array($aid, $priced_attributes) ? ', '. uc_currency_format(($product->sell_price + $price) * $qty) : '';
+                  $display_price = in_array($aid, $priced_attributes) ? ', '. uc_price(($product_price + $price) * $qty, $context) : '';
                   if (count($priced_attributes) == 1) {
                     break;
                   }
                 case 'adjustment':
-                  $display_price = ($price != 0 ? ', '. ($price > 0 ? '+' : '') . uc_currency_format($price * $qty) : '');
+                  $display_price = ($price != 0 ? ', '. ($price > 0 ? '+' : '') . uc_price($price * $qty, $context) : '');
                   break;
               }
 
@@ -313,7 +349,7 @@ function uc_price_per_role_option_prices_form($form_state, $product) {
   $enabled = array_keys(array_filter(variable_get('uc_price_per_role_enabled', array())));
   
   $form['help'] = array(
-    '#value' => t('Leave any box blank to use the standard price for the option.'),
+    '#value' => t('Leave any box blank to use the default price for the option.'),
   );
 
   foreach (uc_product_get_attributes($product->nid) as $aid => $attribute) {
@@ -331,6 +367,14 @@ function uc_price_per_role_option_prices_form($form_state, $product) {
 
     $form['attributes'][$aid]['options'] = array('#weight' => 2);
 
+    $context = array(
+      'type' => 'attribute_option',
+      'subject' => array(
+        'attribute' => $attribute,
+      ),
+      'field' => 'price',
+    );
+
     $base_attr = uc_attribute_load($attribute->aid);
 
     if ($base_attr->options) {
@@ -341,12 +385,22 @@ function uc_price_per_role_option_prices_form($form_state, $product) {
       while ($option = db_fetch_object($result)) {
         $oid = $option->oid;
 
+        $context['revision'] = 'themed';
+        $context['subject']['option'] = $option;
+        $price = is_null($option->price) ? $option->default_price : $option->price;
+
         $form['attributes'][$aid]['options'][$oid]['name'] = array(
           '#value' => $option->name,
         );
 
         $form['attributes'][$aid]['options'][$oid]['price'] = array(
-          '#value' => uc_currency_format(is_null($option->price) ? $option->default_price : $option->price),
+          '#value' => uc_price($price, $context),
+        );
+        // Include unformatted original price to simplify form alteration.
+        $context['revision'] = 'original';
+        $form['attributes'][$aid]['options'][$oid]['price_value'] = array(
+          '#type' => 'value',
+          '#value' => uc_price($price, $context),
         );
 
         foreach ($enabled as $rid) {
@@ -390,7 +444,7 @@ function theme_uc_price_per_role_option_prices_form($form) {
   $roles = user_roles();
   $enabled = array_keys(array_filter(variable_get('uc_price_per_role_enabled', array())));
 
-  $header = array(t('Attribute'), t('Option'), t('Standard price'));
+  $header = array(t('Attribute'), t('Option'), t('Default price'));
   foreach ($enabled as $rid) {
     $header[] = t('%role price', array('%role' => $roles[$rid]));
   }
