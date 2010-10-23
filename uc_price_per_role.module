@@ -165,12 +165,13 @@ function uc_price_per_role_form_alter(&$form, $form_state, $form_id) {
       '#tree' => TRUE,
     );
 
+    $role_prices = $form['#node']->role_prices;
     foreach (user_roles() as $rid => $role) {
       if ($enabled[$rid]) {
         $form['base']['role_prices'][$rid] = array(
           '#type' => 'textfield',
           '#title' => t('%role price', array('%role' => $role)),
-          '#default_value' => uc_store_format_price_field_value($form['#node']->role_prices[$rid]),
+          '#default_value' => isset($role_prices[$rid]) ? uc_store_format_price_field_value($role_prices[$rid]) : '',
           '#description' => t('Purchase price for %role users.', array('%role' => $role)),
           '#size' => 20,
           '#maxlength' => 35,
