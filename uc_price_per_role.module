@@ -298,16 +298,17 @@ function uc_price_per_role_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
           $prices[$row->rid] = $row->price;
         }
 
+        $original_price = $node->sell_price;
         $price = uc_price_per_role_find_price($prices);
         if ($price !== FALSE) {
           $node->sell_price = $price;
         }
 
-        return array('role_prices' => $prices);
+        return array('role_prices' => $prices, 'roleindependent_sell_price' => $original_price);
 
       case 'prepare':
         // Reload original price for editing.
-        $node->sell_price = db_result(db_query('SELECT sell_price FROM {uc_products} WHERE vid = %d', $node->vid));
+        $node->sell_price = $node->roleindependent_sell_price;
         break;
 
       case 'delete':
