@@ -280,7 +280,7 @@ function uc_price_per_role_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
       case 'insert':
       case 'update':
-        db_query("DELETE FROM {uc_price_per_role_prices} WHERE nid = %d", $node->nid);
+        db_query("DELETE FROM {uc_price_per_role_prices} WHERE vid = %d", $node->vid);
         if (is_array($node->role_prices)) {
           foreach ($node->role_prices as $rid => $price) {
             if (is_numeric($price)) {
