@@ -308,7 +308,7 @@ function uc_price_per_role_node_load($nodes, $types) {
  * Implements hook_node_insert().
  */
 function uc_price_per_role_node_insert($node) {
-  db_query("DELETE FROM {uc_price_per_role_prices} WHERE nid = :nid", array(':nid' => $node->nid));
+  db_query("DELETE FROM {uc_price_per_role_prices} WHERE vid = :vid", array(':vid' => $node->vid));
   if (!empty($node->role_prices)) {
     foreach ($node->role_prices as $rid => $price) {
       if (is_numeric($price)) {
@@ -322,7 +322,7 @@ function uc_price_per_role_node_insert($node) {
  * Implements hook_node_update().
  */
 function uc_price_per_role_node_update($node) {
-  db_query("DELETE FROM {uc_price_per_role_prices} WHERE nid = :nid", array(':nid' => $node->nid));
+  db_query("DELETE FROM {uc_price_per_role_prices} WHERE vid = :vid", array(':vid' => $node->vid));
   if (!empty($node->role_prices)) {
     foreach ($node->role_prices as $rid => $price) {
       if (is_numeric($price)) {
