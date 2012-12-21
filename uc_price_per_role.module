@@ -288,9 +288,9 @@ function uc_price_per_role_node_load($nodes, $types) {
   }
 
   if (!empty($node_array)) {
-    $result = db_query("SELECT nid, rid, price FROM {uc_price_per_role_prices} WHERE vid IN (:vids)", array(':vids' => array_keys($node_array)));
+    $result = db_query("SELECT vid, rid, price FROM {uc_price_per_role_prices} WHERE vid IN (:vids)", array(':vids' => array_keys($node_array)));
     foreach ($result as $key => $row) {
-      $node_array[$row->nid]->role_prices[$row->rid] = $row->price;
+      $node_array[$row->vid]->role_prices[$row->rid] = $row->price;
     }
 
     foreach ($node_array as $node) {
