@@ -1,0 +1,1 @@
+#1420394-14 by theladebug: Fixed Role Price Not Showing Up In Cart or Checkout.
