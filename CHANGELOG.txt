@@ -1,3 +1,4 @@
+DanZ: Fixed comment/coding standards.  Added README.txt.
 #1401820 by SeanA:  Removed check_plain() from drupal_set_title() call.
 #1537662 by goodeit: Fixed Undefined variable: object in uc_price_per_role_option_prices_form().
 #1420394 by rootatwc: Fixed Role Price Not Showing Up In Cart or Checkout (#5).

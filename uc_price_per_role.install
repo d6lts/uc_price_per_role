@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Install/deinstall hooks for uc_price_per_role.
+ */
 
 /**
  * Implements hook_uninstall().
@@ -15,7 +19,7 @@ function uc_price_per_role_schema() {
   $schema = array();
 
   $schema['uc_price_per_role_prices'] = array(
-    'description' => t('Ubercart price per role'),
+    'description' => 'Ubercart price per role',
     'fields' => array(
       'rpid' => array(
         'type' => 'serial',
@@ -52,7 +56,7 @@ function uc_price_per_role_schema() {
   );
 
   $schema['uc_price_per_role_option_prices'] = array(
-    'description' => t('Ubercart price per role option prices'),
+    'description' => 'Ubercart price per role option prices',
     'fields' => array(
       'opid' => array(
         'type' => 'serial',

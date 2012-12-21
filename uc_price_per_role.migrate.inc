@@ -12,15 +12,18 @@ function uc_price_per_role_migrate_fields_node($type) {
   $enabled = variable_get('uc_price_per_role_enabled', array());
   $fields = array();
 
-    foreach (user_roles() as $rid => $role) {
-      if ($enabled[$rid]) {
-        $fields['role_prices_' . $rid] = t('Purchase price for %role users.', array('%role' => $role));
-      }
+  foreach (user_roles() as $rid => $role) {
+    if ($enabled[$rid]) {
+      $fields['role_prices_' . $rid] = t('Purchase price for %role users.', array('%role' => $role));
     }
+  }
 
   return $fields;
 }
 
+/**
+ * Implements hook_migrate_prepare_node().
+ */
 function uc_price_per_role_migrate_prepare_node(&$node, $tblinfo, $row) {
   foreach ($tblinfo->fields as $destfield => $values) {
     if ($values['srcfield'] && isset($row->$values['srcfield'])) {
