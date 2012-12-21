@@ -380,7 +380,7 @@ function uc_price_per_role_uc_product_alter(&$node){
  * @see theme_uc_price_per_role_option_prices_form()
  */
 function uc_price_per_role_option_prices_form($form, &$form_state, $product) {
-  drupal_set_title(check_plain($product->title));
+  drupal_set_title($product->title);
 
   $role_prices = uc_price_per_role_load_option_prices($product->nid);
   $enabled = array_keys(array_filter(variable_get('uc_price_per_role_enabled', array())));
