@@ -1,2 +1,4 @@
+#1537662 by goodeit: Fixed Undefined variable: object in uc_price_per_role_option_prices_form().
+#1420394 by rootatwc: Fixed Role Price Not Showing Up In Cart or Checkout (#5).
 #1366378 by rootatwc, SeanA: Fixed Notice: Undefined property: stdClass::$sell_price.
-#1420394 by theladebug: Fixed Role Price Not Showing Up In Cart or Checkout.
+#1420394 by theladebug: Fixed Role Price Not Showing Up In Cart or Checkout (#14).
