@@ -297,7 +297,7 @@ function uc_price_per_role_node_load($nodes, $types) {
       $original_price = $node->sell_price;
       $price = uc_price_per_role_find_price($node->role_prices);
       if ($price !== FALSE) {
-        $node->sell_price = $price;
+        $node->price = $node->sell_price = $price;
       }
       $node->roleindependent_sell_price = $original_price;
     }
