@@ -255,7 +255,12 @@ function uc_price_per_role_form_alter(&$form, $form_state, $form_id) {
             $attribute = uc_attribute_load($aid, $nid, 'product');
 
             foreach (array_keys($form['attributes'][$aid]['#options']) as $oid) {
-              $price = uc_price_per_role_find_price($role_prices[$oid]);
+              if (isset($role_prices[$oid])) {
+                $price = uc_price_per_role_find_price($role_prices[$oid]);
+              }
+              else {
+                $price = FALSE;
+              }
 
               if ($price !== FALSE) {
                 switch ($format) {
