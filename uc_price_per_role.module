@@ -241,8 +241,10 @@ function uc_price_per_role_form_alter(&$form, $form_state, $form_id) {
     if (module_exists('uc_attribute') && $format != 'none') {
       $nid = intval($form['nid']['#value']);
       $product = node_load($nid);
-      $qty = intval($form['qty']['#value']);
-      if (!$qty) {
+      if (isset($form['qty']['#value'])) {
+        $qty = intval($form['qty']['#value']);
+      }
+      else {
         $qty = 1;
       }
 
