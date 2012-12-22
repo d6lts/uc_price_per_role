@@ -51,7 +51,7 @@ function uc_price_per_role_menu() {
  */
 function uc_price_per_role_admin_paths() {
   return array(
-    'node/*/edit/option_prices' => TRUE
+    'node/*/edit/option_prices' => TRUE,
   );
 }
 
@@ -91,7 +91,7 @@ function uc_price_per_role_theme() {
 /**
  * Configuration settings form.
  *
- * @see theme_uc_price_per_role_settings_form() {
+ * @see theme_uc_price_per_role_settings_form()
  */
 function uc_price_per_role_settings_form() {
   $enabled = variable_get('uc_price_per_role_enabled', array());
@@ -133,7 +133,7 @@ function uc_price_per_role_settings_form() {
 /**
  * Theme the configuration settings form.
  *
- * @see uc_price_per_role_settings_form() {
+ * @see uc_price_per_role_settings_form()
  */
 function theme_uc_price_per_role_settings_form($variables) {
   $form = $variables['form'];
@@ -154,13 +154,25 @@ function theme_uc_price_per_role_settings_form($variables) {
   }
 
   drupal_add_tabledrag('uc-price-per-roles', 'order', 'sibling', 'role-weight');
-  $output .= theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('id' => 'uc-price-per-roles')));
+  $output .= theme(
+    'table',
+    array(
+      'header' => $header,
+      'rows' => $rows,
+      'attributes' => array('id' => 'uc-price-per-roles'),
+    )
+  );
 
   $output .= drupal_render_children($form);
 
   return $output;
 }
 
+/**
+ * Submit function for the setings form.
+ *
+ * @see uc_price_per_role_settings_form()
+ */
 function uc_price_per_role_settings_form_submit($form, &$form_state) {
   $enabled = array();
   $weights = array();
@@ -267,6 +279,9 @@ function uc_price_per_role_form_alter(&$form, $form_state, $form_id) {
   }
 }
 
+/**
+ * Theme the role prices form area.
+ */
 function theme_uc_price_per_role_product_prices($variables) {
   $prices = $variables['prices'];
 
@@ -331,7 +346,15 @@ function uc_price_per_role_node_insert($node) {
   if (!empty($node->role_prices)) {
     foreach ($node->role_prices as $rid => $price) {
       if (is_numeric($price)) {
-        db_query("INSERT INTO {uc_price_per_role_prices} (vid, nid, rid, price) VALUES (:vid, :nid, :rid, :price)", array(':vid' => $node->vid, ':nid' => $node->nid, ':rid' => $rid, ':price' => $price));
+        db_query(
+          "INSERT INTO {uc_price_per_role_prices} (vid, nid, rid, price) VALUES (:vid, :nid, :rid, :price)",
+          array(
+            ':vid' => $node->vid,
+            ':nid' => $node->nid,
+            ':rid' => $rid,
+            ':price' => $price,
+          )
+        );
       }
     }
   }
@@ -345,7 +368,15 @@ function uc_price_per_role_node_update($node) {
   if (!empty($node->role_prices)) {
     foreach ($node->role_prices as $rid => $price) {
       if (is_numeric($price)) {
-        db_query("INSERT INTO {uc_price_per_role_prices} (vid, nid, rid, price) VALUES (:vid, :nid, :rid, :price)", array(':vid' => $node->vid, ':nid' => $node->nid, ':rid' => $rid, ':price' => $price));
+        db_query(
+          "INSERT INTO {uc_price_per_role_prices} (vid, nid, rid, price) VALUES (:vid, :nid, :rid, :price)",
+          array(
+            ':vid' => $node->vid,
+            ':nid' => $node->nid,
+            ':rid' => $rid,
+            ':price' => $price,
+          )
+        );
       }
     }
   }
@@ -376,7 +407,7 @@ function uc_price_per_role_node_revision_delete($node) {
 }
 
 /**
- * Implements hook_uc_product_alter()
+ * Implements hook_uc_product_alter().
  */
 function uc_price_per_role_uc_product_alter(&$node) {
   if (module_exists('uc_attribute')) {
@@ -539,7 +570,14 @@ function theme_uc_price_per_role_option_prices_form($variables) {
   }
 
   $output = drupal_render($form['help'])
-          . theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('id' => 'product_attributes')))
+          . theme(
+            'table',
+            array(
+              'header' => $header,
+              'rows' => $rows,
+              'attributes' => array('id' => 'product_attributes'),
+            )
+          )
           . drupal_render_children($form);
 
   return $output;
