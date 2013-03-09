@@ -723,3 +723,30 @@ function uc_price_per_role_switch_form_submit($form_id, &$form_state) {
 function uc_price_per_role_migrate_api() {
   return array('api' => 1);
 }
+
+/**
+ * Implements hook_user_role_delete().
+ * 
+ * Remove orphaned database entries and weights for deleted roles.
+ */
+function uc_price_per_role_user_role_delete($role) {
+  // Remove deleted role from uc_price_per_role_weights variable.
+  $weights = variable_get('uc_price_per_role_weights', array());
+  unset($weights[$role->rid]);
+  variable_set('uc_price_per_role_weights', $weights);
+
+  // Remove deleted role from uc_price_per_role_enabled variable.
+  $enabled = variable_get('uc_price_per_role_enabled', array());
+  unset($enabled[$role->rid]);
+  variable_set('uc_price_per_role_enabled', $enabled);
+
+  // Remove data for deleted role from the {uc_price_per_role_prices} table.
+  db_delete('uc_price_per_role_prices')
+    ->condition('rid', $role->rid, '=')
+    ->execute();
+
+  // Remove deleted role from the {uc_price_per_role_option_prices} table.
+  db_delete('uc_price_per_role_option_prices')
+    ->condition('rid', $role->rid, '=')
+    ->execute();
+}
