@@ -8,5 +8,6 @@ DanZ: Fixed comment/coding standards.  Added README.txt.
 #1420394 by rootatwc: Fixed Role Price Not Showing Up In Cart or Checkout (#5).
 #1366378 by rootatwc, SeanA: Fixed Notice: Undefined property: stdClass::$sell_price.
 #1420394 by theladebug: Fixed Role Price Not Showing Up In Cart or Checkout (#14).
-#7154920 by DanZ: Fixed tables and configuration not cleaned up when roles are deleted.
-#7154966 by DanZ: Added link from modules page to config page.
+#1771038 by DanZ: Fixed tables and configuration not cleaned up when roles are deleted.
+#1937912 by DanZ: Added link from modules page to config page.
+#1873672 by DanZ: Added online help.

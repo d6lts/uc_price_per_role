@@ -750,3 +750,28 @@ function uc_price_per_role_user_role_delete($role) {
     ->condition('rid', $role->rid, '=')
     ->execute();
 }
+
+/**
+ * Implements hook_help().
+ */
+function uc_price_per_role_help($path, $arg) {
+  switch ($path) {
+    case "admin/help#uc_price_per_role":
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Ubercart Price-Per-Role module allows Ubercart to charge different prices to different customers based on their roles.  It works with both base prices and option prices.') . '</p>';
+      $output .= '<h3>' . t('Configuration') . '</h3>';
+      $output .= '<p>' . t('For each class of customer that should get a different price, create a role on the ') . l(t('roles configuation page'), 'admin/people/permissions/roles') . '</p>';
+      $output .= '<p>' . t('Assign roles to users ') . l(t('manually'), 'admin/people') . t(', via ') . l(t('Rules'), 'admin/config/workflow/rules') . t(' or otherwise.') . '</p>';
+      $output .= '<p>' . t('Go to the ') . l(t('configuration page'), 'admin/store/settings/price_per_role') . t('.  Select which roles get special pricing and select which roles to use for users who have multiple maching roles.') . '</p>';
+      $output .= '<p>' . t('Go to each product page that should receive special role pricing and enter the price for each role.  Role prices may also be entered for each attribute option on a per-product basis.');
+      $output .= '<h3>' . t('Role selection block') . '</h3>';
+      $output .= '<p>' . t('Administrators may use a price selection block.  This is handy for checking prices without needing to log in as a user with a particular role.  To use it:');
+      $output .= '<ul><li>' . t('Go to the ') . l(t('permissions page'), 'admin/people/permissions#module-uc_price_per_role') . t(' and grant access to the roles that should use the block.') . '</li>';
+      $output .= '<li>' . t('Go to the ') . l(t('blocks administration page'), 'admin/structure/block') . t(' and enable the block for whichever themes you wish, especially your administration theme.  The footer is a good region for it.') . '</li></ul>';
+      $output .= '<p>' . t('Once the block is placed, administrators can use it to select role prices.') . '</p>';
+      $output .= '<h3>' . t('Manually creating orders') . '</h3>';
+      $output .= '<p>' . t('The ') . l(t('order creation form'), 'admin/store/orders/create') . t(' does not respect the role of the customer for whom the order is being created.  However, it does respect the roles of the current user and the price selection block.  To create an order using role pricing, use the price selection block as noted above to select the role of the customer, then create the order as usual.');
+      return $output;
+  }
+}
