@@ -1,3 +1,5 @@
+Changes for 7.x-1.0-rc1
+
 #1401816 by goodeit: Fixed Undefined index: #value in uc_price_per_role_form_alter().
 #1351870 by goodeit: Fixed Undefined offset in uc_price_per_role_form_alter().
 DanZ: Fixed comment/coding standards.  Added README.txt.
@@ -7,3 +9,4 @@ DanZ: Fixed comment/coding standards.  Added README.txt.
 #1366378 by rootatwc, SeanA: Fixed Notice: Undefined property: stdClass::$sell_price.
 #1420394 by theladebug: Fixed Role Price Not Showing Up In Cart or Checkout (#14).
 #7154920 by DanZ: Fixed tables and configuration not cleaned up when roles are deleted.
+#7154966 by DanZ: Added link from modules page to config page.
