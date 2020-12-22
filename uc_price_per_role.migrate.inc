@@ -23,8 +23,8 @@ function uc_price_per_role_migrate_fields_node($type) {
 
 function uc_price_per_role_migrate_prepare_node(&$node, $tblinfo, $row) {
   foreach ($tblinfo->fields as $destfield => $values) {
-    if ($values['srcfield'] && isset($row->$values['srcfield'])) {
-      $newvalue = $row->$values['srcfield'];
+    if ($values['srcfield'] && isset($row->{$values['srcfield']})) {
+      $newvalue = $row->{$values['srcfield']};
     } else {
       $newvalue = $values['default_value'];
     }
