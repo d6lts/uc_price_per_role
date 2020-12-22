@@ -3,3 +3,9 @@ description = Allow Ubercart products to have role-specific pricing.
 dependencies[] = uc_product
 package = Ubercart - extra
 core = 6.x
+
+; Information added by Drupal 6 LTS vendors on 2020-12-22
+version = "6.x-1.2"
+core = "6.x"
+project = "uc_price_per_role"
+datestamp = "1608649845"
